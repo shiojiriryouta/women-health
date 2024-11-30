@@ -16,7 +16,12 @@ export async function POST(req) {
   try {
     // データ挿入クエリ
     await connection.execute(
-      'INSERT INTO users (age, height, weight, line_id) VALUES (?, ?, ?, ?)',
+      `INSERT INTO users (age, height, weight, line_id)
+        VALUES (?, ?, ?, ?)
+        ON DUPLICATE KEY UPDATE
+        age = VALUES(age),
+        height = VALUES(height),
+        weight = VALUES(weight)`,
       [age, height, weight, line_id]
     );
 
