@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useLiff } from './hooks/useLiff';
 
 export default function Home() {
-  const liffId = '2006623415-NBg7B4nv'; // LINE Developersで取得したLIFF ID
+  const liffId = '2006623415-73B9n0a3'; // LINE Developersで取得したLIFF ID
   const { liff, error } = useLiff(liffId);
   const [userData, setUserData] = useState({
     age: '',
