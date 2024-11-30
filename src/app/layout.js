@@ -13,7 +13,7 @@ const geistMono = localFont({
 });
 
 export const metadata = {
-  title: "女性の健康向上サイト",
+  title: "Halth with Cat",
   description: "生体情報のアンケート用サイトです",
 };
 
