@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useLiff } from './hooks/useLiff';
 
 export default function Home() {
-  const liffId = '2006623415-73B9n0a3'; // LINE Developersで取得したLIFF ID
+  const liffId = '2006623415-NBg7B4nv'; // LINE Developersで取得したLIFF ID
   const { liff, error } = useLiff(liffId);
   const [userData, setUserData] = useState({
     age: '',
@@ -14,14 +14,16 @@ export default function Home() {
   });
   const [statusMessage, setStatusMessage] = useState('');
   const [loading, setLoading] = useState(true); // ローディング状態
+  const [profile, setProfile] = useState(null);
 
   // LINEユーザーIDの取得
   useEffect(() => {
     const fetchLineUserId = async () => {
       if (liff && liff.isLoggedIn()) {
         try {
-          const profile = await liff.getProfile();
-          setUserData((prevData) => ({ ...prevData, line_id: profile.userId }));
+          const profileData = await liff.getProfile();
+          setProfile(profileData); // プロフィール情報を設定
+          setUserData((prevData) => ({ ...prevData, line_id: profileData.userId }));
         } catch (err) {
           console.error('Error fetching LINE user ID:', err);
         } finally {
@@ -83,8 +85,18 @@ export default function Home() {
       </header>
   
       {/* メインコンテンツ */}
-      <main className="flex justify-center">
-        <form onSubmit={handleSubmit} className="max-w-sm px-4">
+      <main className="">
+        {/* <div>
+          {profile && (
+            <div>
+              <p>Display Name: {profile.displayName}</p>
+              <p>LINE ID: {profile.userId}</p>
+              {profile.pictureUrl && <img src={profile.pictureUrl} alt="Profile" />}
+            </div>
+          )}
+        </div> */}
+        <div className="flex justify-center">
+        <form onSubmit={handleSubmit} className="max-w-sm px-4 ">
           {/* 年齢入力 */}
           <div className="mb-5">
             <label htmlFor="age" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
@@ -144,6 +156,7 @@ export default function Home() {
             保存
           </button>
         </form>
+        </div>
       </main>
       {/* ステータスメッセージ */}
       {statusMessage && (
