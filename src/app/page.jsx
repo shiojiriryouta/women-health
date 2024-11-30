@@ -1,7 +1,11 @@
 "use client"
 import Image from "next/image";
 import { useState } from "react";
+import { useLiff } from './hooks/useLiff';
+
 export default function Home() {
+  const liffId = '2006623415-73B9n0a3'; // LINE Developersで取得したLIFF ID
+  const { liff, error } = useLiff(liffId);
   let line_id_mock = "test123456"
   const [userData, setUserData] = useState({
     age : '',
