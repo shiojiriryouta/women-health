@@ -1,38 +1,71 @@
-"use client"
+"use client";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLiff } from './hooks/useLiff';
 
 export default function Home() {
   const liffId = '2006623415-73B9n0a3'; // LINE Developersで取得したLIFF ID
   const { liff, error } = useLiff(liffId);
-  let line_id_mock = "test123456"
   const [userData, setUserData] = useState({
-    age : '',
-    height : '',
-    weight : '',
-    line_id : line_id_mock,
+    age: '',
+    height: '',
+    weight: '',
+    line_id: '',
   });
   const [statusMessage, setStatusMessage] = useState('');
+  const [loading, setLoading] = useState(true); // ローディング状態
+
+  // LINEユーザーIDの取得
+  useEffect(() => {
+    const fetchLineUserId = async () => {
+      if (liff && liff.isLoggedIn()) {
+        try {
+          const profile = await liff.getProfile();
+          setUserData((prevData) => ({ ...prevData, line_id: profile.userId }));
+        } catch (err) {
+          console.error('Error fetching LINE user ID:', err);
+        } finally {
+          setLoading(false); // ローディング終了
+        }
+      } else {
+        // 未ログインの場合はログインを要求
+        try {
+          liff.login();
+        } catch (err) {
+          console.error('Error logging in:', err);
+        }
+      }
+    };
+    if (liff) {
+      fetchLineUserId();
+    }
+  }, [liff]);
+
   const handleChange = (e) => {
-    const {name, value} = e.target;
-    setUserData({...userData,[name]:value})
-  }
-  const handleSubmit = async (e) =>{
+    const { name, value } = e.target;
+    setUserData({ ...userData, [name]: value });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    try{
-      const response = await fetch('api/submit',{
+    try {
+      const response = await fetch('api/submit', {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(userData),
       });
       const data = await response.json();
       setStatusMessage(data.message);
-    } catch (error){
+    } catch (error) {
       console.error('Error submitting form:', error);
       setStatusMessage('Error submitting data');
     }
+  };
+
+  if (loading) {
+    return <div>Loading...</div>;
   }
+
   return (
     <>
       {/* ヘッダー */}
@@ -71,7 +104,7 @@ export default function Home() {
   
           {/* 身長入力 */}
           <div className="mb-5">
-            <label htmlFor="length" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+            <label htmlFor="height" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
               身長
             </label>
             <input
@@ -128,5 +161,4 @@ export default function Home() {
       </footer>
     </>
   );
-  
 }
