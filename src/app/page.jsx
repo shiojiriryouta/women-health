@@ -146,6 +146,18 @@ export default function Home() {
       setStatusMessage('データ送信中にエラーが発生しました');
     }
   };
+  const handleDateChange = (e) => {
+    const selectedDate = new Date(e.target.value);
+    const minDate = new Date("2024-11-24");
+    const maxDate = new Date();
+  
+    if (selectedDate < minDate || selectedDate > maxDate) {
+      alert("選択できる日付は2024年11月24日から今日までです。");
+      e.target.value = ""; // 不正な入力をリセット
+    } else {
+      setDate(e.target.value);
+    }
+  };
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -272,12 +284,11 @@ export default function Home() {
                     type="date"
                     id="date"
                     value={date}
-                    onChange={(e) => setDate(e.target.value)}
+                    onChange={handleDateChange} // カスタムバリデーション関数を使用
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
-                    max={new Date().toISOString().split("T")[0]}
-                    min="2024-11-24"
                     required
                   />
+
                 </div>
 
                 {/* 朝昼晩の選択 */}
