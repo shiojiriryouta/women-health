@@ -180,13 +180,13 @@ export default function Home() {
           className={`px-4 py-2 text-sm font-medium ${activeTab === 0 ? 'border-b-2 border-blue-500 text-blue-500' : 'text-gray-500'}`}
           onClick={() => setActiveTab(0)}
         >
-          生体情報
+          ユーザ情報
         </button>
         <button
           className={`px-4 py-2 text-sm font-medium ${activeTab === 1 ? 'border-b-2 border-blue-500 text-blue-500' : 'text-gray-500'}`}
           onClick={() => setActiveTab(1)}
         >
-          履歴編集
+          食事の編集
         </button>
         <button
           className={`px-4 py-2 text-sm font-medium ${activeTab === 2 ? 'border-b-2 border-blue-500 text-blue-500' : 'text-gray-500'}`}
