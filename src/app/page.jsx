@@ -152,7 +152,7 @@ export default function Home() {
     const maxDate = new Date();
   
     if (selectedDate < minDate || selectedDate > maxDate) {
-      alert("選択できる日付は2024年11月24日から今日までです。");
+      alert("選択可能な日付の範囲を超えています");
       e.target.value = ""; // 不正な入力をリセット
     } else {
       setDate(e.target.value);
